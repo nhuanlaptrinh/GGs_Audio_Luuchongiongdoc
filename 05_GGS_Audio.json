@@ -1,0 +1,446 @@
+{
+  "name": "05.GGS_Audio",
+  "nodes": [
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "driveId": {
+          "__rl": true,
+          "value": "My Drive",
+          "mode": "list",
+          "cachedResultName": "My Drive",
+          "cachedResultUrl": "https://drive.google.com/drive/my-drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "15Z_KT7rrcM1A69T3-7i_ePnc9ghPMmo1",
+          "mode": "list",
+          "cachedResultName": "10. N8n_Text_Audio_Luu_Chon_Giong_Doc",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/15Z_KT7rrcM1A69T3-7i_ePnc9ghPMmo1"
+        },
+        "options": {
+          "simplifyOutput": false
+        }
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        700,
+        -220
+      ],
+      "id": "85f5619c-f5ce-4a7d-ab9c-9770e890f1f7",
+      "name": "Google Drive",
+      "credentials": {
+        "googleApi": {
+          "id": "v57gc4yCBd85gV0d",
+          "name": "Google Service Account account 20"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "input": "={{ $('If').item.json['Kịch Bản'] }}",
+        "voice": "={{ $('If').item.json['Chọn Giọng Đọc'] }}",
+        "options": {
+          "response_format": "mp3",
+          "speed": 1,
+          "binaryPropertyOutput": "data"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        480,
+        -220
+      ],
+      "id": "31fb71ab-3e86-4a48-9456-f9e2c027e7c8",
+      "name": "OpenAI1",
+      "credentials": {
+        "openAiApi": {
+          "id": "Fb5FWosDRIdQsNQ0",
+          "name": "OpenAi account 23062035"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "share",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "permissionsUi": {
+          "permissionsValues": {
+            "role": "reader",
+            "type": "anyone"
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        920,
+        -220
+      ],
+      "id": "f1d2730a-e7b4-4e9e-8890-bc634efb4399",
+      "name": "Google Drive1",
+      "credentials": {
+        "googleApi": {
+          "id": "v57gc4yCBd85gV0d",
+          "name": "Google Service Account account 20"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "1OhutTaXCAJ9DmxmiU-BQMoTxKjdh7Tdz75riiAZre_M",
+          "mode": "list",
+          "cachedResultName": "03. N8n_Lua_Chon_Giong_Doc",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1OhutTaXCAJ9DmxmiU-BQMoTxKjdh7Tdz75riiAZre_M/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Trang tính1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1OhutTaXCAJ9DmxmiU-BQMoTxKjdh7Tdz75riiAZre_M/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        -180,
+        -220
+      ],
+      "id": "51e6a66d-32e9-48f0-8ebb-a0f1dfd80547",
+      "name": "Google Sheets Trigger",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "s4dSAY6HttQn8Tn6",
+          "name": "Google Sheets Trigger account 19"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "8589c024-ce0e-4612-9f3d-ad55d79b8c61",
+              "leftValue": "={{ $json['Trạng Thái '] }}",
+              "rightValue": "Run",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        40,
+        -220
+      ],
+      "id": "24863710-bd53-4f2e-985c-6f75c88c9453",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1OhutTaXCAJ9DmxmiU-BQMoTxKjdh7Tdz75riiAZre_M",
+          "mode": "list",
+          "cachedResultName": "03. N8n_Lua_Chon_Giong_Doc",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1OhutTaXCAJ9DmxmiU-BQMoTxKjdh7Tdz75riiAZre_M/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Trang tính1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1OhutTaXCAJ9DmxmiU-BQMoTxKjdh7Tdz75riiAZre_M/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": "={{ $('Google Sheets Trigger').item.json.row_number }}",
+            "Trạng Thái ": "Pro"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "Kịch Bản",
+              "displayName": "Kịch Bản",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Chọn Giọng Đọc",
+              "displayName": "Chọn Giọng Đọc",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Trạng Thái ",
+              "displayName": "Trạng Thái ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Link Audio",
+              "displayName": "Link Audio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        260,
+        -220
+      ],
+      "id": "2d86f492-0486-43cb-9898-16758f184266",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleApi": {
+          "id": "v57gc4yCBd85gV0d",
+          "name": "Google Service Account account 20"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1OhutTaXCAJ9DmxmiU-BQMoTxKjdh7Tdz75riiAZre_M",
+          "mode": "list",
+          "cachedResultName": "03. N8n_Lua_Chon_Giong_Doc",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1OhutTaXCAJ9DmxmiU-BQMoTxKjdh7Tdz75riiAZre_M/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Trang tính1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1OhutTaXCAJ9DmxmiU-BQMoTxKjdh7Tdz75riiAZre_M/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": "={{ $('If').item.json.row_number }}",
+            "Trạng Thái ": "Success",
+            "Link Audio": "={{ $('Google Drive').item.json.webContentLink }}"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "Kịch Bản",
+              "displayName": "Kịch Bản",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Chọn Giọng Đọc",
+              "displayName": "Chọn Giọng Đọc",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Trạng Thái ",
+              "displayName": "Trạng Thái ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Link Audio",
+              "displayName": "Link Audio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        1140,
+        -220
+      ],
+      "id": "55aeb41d-8d27-4b58-9186-60905da0e34d",
+      "name": "Google Sheets1",
+      "credentials": {
+        "googleApi": {
+          "id": "v57gc4yCBd85gV0d",
+          "name": "Google Service Account account 20"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "OpenAI1": {
+      "main": [
+        [
+          {
+            "node": "Google Drive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive": {
+      "main": [
+        [
+          {
+            "node": "Google Drive1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive1": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets Trigger": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "OpenAI1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "94f766d2-4d80-4751-b6f8-a6e8517fb254",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "94a383c02457267bcc44878635a0fa02b7d3206c5479bfc8890faa812e2bbd97"
+  },
+  "id": "Elp2V0mMFmtSMGhW",
+  "tags": []
+}
